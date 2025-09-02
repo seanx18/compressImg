@@ -8,7 +8,8 @@
     "dev": "nodemon server.js",
     "build": "echo 'Build complete'",
     "deploy": "gh-pages -d .",
-    "install-deps": "npm install"
+    "install-deps": "npm install",
+    "vercel-build": "echo 'Vercel build complete'"
   },
   "dependencies": {
     "express": "^4.18.2",
