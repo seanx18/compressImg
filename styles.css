@@ -99,16 +99,65 @@ body {
   display: flex;
   gap: 2rem;
   align-items: flex-start;
+  min-height: 600px;
 }
 
 .left-panel {
   flex: 1;
-  min-width: 0; /* 防止内容溢出 */
+  min-width: 500px; /* 确保左侧面板最小宽度 */
+  max-width: calc(100% - 420px); /* 为右侧面板预留空间 */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 左侧面板区域美化 */
+.left-panel .upload-section,
+.left-panel .settings-section {
+  background: var(--surface-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.left-panel .upload-section:hover,
+.left-panel .settings-section:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-color);
 }
 
 .right-panel {
-  flex: 0 0 400px; /* 固定宽度 400px */
+  flex: 0 0 380px; /* 稍微减小右侧宽度到 380px */
   min-height: 600px;
+  max-height: 800px; /* 限制最大高度 */
+  overflow: hidden; /* 防止内容溢出 */
+}
+
+/* 大屏幕优化 */
+@media (min-width: 1400px) {
+  .main-workspace {
+    gap: 3rem;
+  }
+  
+  .left-panel {
+    min-width: 600px;
+  }
+  
+  .right-panel {
+    flex: 0 0 420px;
+  }
+}
+
+/* 中等屏幕调整 */
+@media (max-width: 1200px) {
+  .left-panel {
+    min-width: 450px;
+  }
+  
+  .right-panel {
+    flex: 0 0 350px;
+  }
 }
 
 /* 响应式调整 */
@@ -116,11 +165,18 @@ body {
   .main-workspace {
     flex-direction: column;
     gap: 1.5rem;
+    min-height: auto;
+  }
+  
+  .left-panel {
+    min-width: 0;
+    max-width: none;
   }
   
   .right-panel {
     flex: 1;
     min-height: auto;
+    max-height: none;
   }
 }
 
@@ -132,6 +188,12 @@ section {
   margin-bottom: 2rem;
   box-shadow: var(--shadow);
   border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+/* 在新布局中移除默认的 margin-bottom */
+.main-workspace section {
+  margin-bottom: 0;
 }
 
 /* 上传区域 */
@@ -147,9 +209,10 @@ section {
 }
 
 .upload-area:hover {
-  border-color: var(--primary-color);
-  background-color: var(--primary-color);
-  background-opacity: 0.02;
+  border-color: var(--success-color);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, rgba(34, 197, 94, 0.05) 100%);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 .upload-area.drag-over {
@@ -191,15 +254,40 @@ section {
 }
 
 .setting-group {
-  background: rgba(248, 250, 252, 0.5);
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%);
   border-radius: var(--radius-md);
   padding: 1.5rem;
   border: 1px solid var(--border-color);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.setting-group::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--info-color), var(--success-color));
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.setting-group:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.setting-group:hover::before {
+  opacity: 1;
 }
 
 @media (prefers-color-scheme: dark) {
   .setting-group {
-    background: rgba(15, 23, 42, 0.5);
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.9) 100%);
   }
 }
 
@@ -411,12 +499,38 @@ input[type="range"]::-webkit-slider-thumb:hover {
   height: 100%;
   display: flex;
   flex-direction: column;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--surface-color) 0%, #f8fafc 100%);
+  box-shadow: var(--shadow-md);
 }
 
 .right-panel .files-list {
   flex: 1;
   min-height: 300px;
   max-height: none;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/* 文件列表滚动条美化 */
+.right-panel .files-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.right-panel .files-list::-webkit-scrollbar-track {
+  background: var(--bg-color);
+  border-radius: 4px;
+}
+
+.right-panel .files-list::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+  transition: var(--transition);
+}
+
+.right-panel .files-list::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
 .empty-state {
@@ -769,7 +883,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 /* 深色模式优化 */
 @media (prefers-color-scheme: dark) {
   .upload-area:hover {
-    background-color: rgba(37, 99, 235, 0.1);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(34, 197, 94, 0.12) 100%);
+    border-color: var(--success-color);
   }
 
   .upload-area.drag-over {
