@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "compressImg",
+  "name": "compressImg", 
   "builds": [
     {
       "src": "server.js",
@@ -14,6 +14,14 @@
     {
       "src": "/api/(.*)",
       "dest": "/server.js"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*\\.(js|css|html))",
+      "dest": "/$1"
     },
     {
       "src": "/(.*)",
