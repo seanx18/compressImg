@@ -270,6 +270,24 @@ const compressor = new ImageCompressor();
 /**
  * 健康检查接口
  */
+app.get('/', (req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    version: '1.0.0',
+    message: '智能图片压缩 API 服务正常运行',
+    features: {
+      formats: ['webp', 'jpg', 'png', 'gif'],
+      animated: true,
+      maxFileSize: '50MB',
+      batchProcessing: true,
+    },
+  });
+});
+
+/**
+ * 健康检查接口
+ */
 app.get('/health', (req, res) => {
   res.json({
     status: 'ok',
@@ -499,8 +517,16 @@ app.use((req, res) => {
   res.status(404).json({
     error: 'API接口不存在',
     path: req.path,
+    availableEndpoints: [
+      'GET /',
+      'GET /health',
+      'POST /compress',
+      'POST /compress/batch',
+      'GET /formats'
+    ],
     code: 'NOT_FOUND',
   });
 });
 
+// 导出给 Vercel Serverless Functions 使用
 module.exports = app;
