@@ -1,13 +1,10 @@
 {
   "version": 2,
-  "name": "compressImg", 
+  "name": "compressImg",
   "builds": [
     {
       "src": "server.js",
-      "use": "@vercel/node",
-      "config": {
-        "maxLambdaSize": "50mb"
-      }
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -20,15 +17,8 @@
       "dest": "/index.html"
     },
     {
-      "src": "/(.*\\.(js|css|html))",
-      "dest": "/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
