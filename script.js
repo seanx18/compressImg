@@ -31,6 +31,11 @@ class ImageCompressorApp {
     this.compressBtn = document.getElementById('compressBtn');
     this.clearBtn = document.getElementById('clearBtn');
     this.downloadAllBtn = document.getElementById('downloadAllBtn');
+    this.settingsBtn = document.getElementById('settingsBtn');
+
+    // 悬浮设置面板
+    this.settingsOverlay = document.getElementById('settingsOverlay');
+    this.closeSettingsBtn = document.getElementById('closeSettingsBtn');
 
     // 文件列表
     this.filesList = document.getElementById('filesList');
@@ -114,6 +119,15 @@ class ImageCompressorApp {
     this.compressBtn.addEventListener('click', () => this.startCompression());
     this.clearBtn.addEventListener('click', () => this.clearFiles());
     this.downloadAllBtn.addEventListener('click', () => this.downloadAll());
+    this.settingsBtn.addEventListener('click', () => this.showSettings());
+
+    // 悬浮设置面板事件
+    this.closeSettingsBtn.addEventListener('click', () => this.hideSettings());
+    this.settingsOverlay.addEventListener('click', (e) => {
+      if (e.target === this.settingsOverlay) {
+        this.hideSettings();
+      }
+    });
 
     // 键盘快捷键
     document.addEventListener('keydown', (e) => {
@@ -442,11 +456,10 @@ class ImageCompressorApp {
     const fileInfo = fileElement.querySelector('.file-info');
     const compressionInfo = document.createElement('div');
     compressionInfo.className = 'compression-info';
-    compressionInfo.style.cssText = 'margin-top: 0.5rem; font-size: 0.75rem; color: var(--success-color);';
 
     compressionInfo.innerHTML = `
-            📈 压缩率: ${fileObj.compressionRatio}% |
-            💾 ${this.formatFileSize(fileObj.originalSize)} → ${this.formatFileSize(fileObj.compressedSize)}
+            <span>📈 压缩率: ${fileObj.compressionRatio}%</span>
+            <span>💾 ${this.formatFileSize(fileObj.originalSize)} → ${this.formatFileSize(fileObj.compressedSize)}</span>
         `;
 
     // 添加下载按钮
@@ -648,6 +661,23 @@ class ImageCompressorApp {
     } catch (error) {
       console.error('加载设置失败:', error);
     }
+  }
+
+  // 悬浮设置面板控制
+  showSettings() {
+    this.settingsOverlay.style.display = 'flex';
+    // 使用 setTimeout 确保 display 设置生效后再添加 show 类
+    setTimeout(() => {
+      this.settingsOverlay.classList.add('show');
+    }, 10);
+  }
+
+  hideSettings() {
+    this.settingsOverlay.classList.remove('show');
+    // 等待动画完成后隐藏元素
+    setTimeout(() => {
+      this.settingsOverlay.style.display = 'none';
+    }, 300);
   }
 }
 

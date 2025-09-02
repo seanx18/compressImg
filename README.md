@@ -22,8 +22,7 @@
 
 ## 🌐 在线演示
 
-- **GitHub Pages**: [https://your-username.github.io/compressImg](https://your-username.github.io/compressImg)
-- **Vercel**: [https://compressImg.vercel.app](https://compressImg.vercel.app)
+- **Vercel**: [https://compress-img-xi.vercel.app](https://compress-img-xi.vercel.app)
 
 ## 🚀 快速开始
 
@@ -177,112 +176,29 @@ const defaultSettings = {
 
 ## 🚢 部署指南
 
-### 1. Vercel 部署 (推荐)
+### Vercel 一键部署
+
+本项目已针对 Vercel 平台进行完整优化：
 
 ```bash
-# 1. 安装 Vercel CLI
+# 方式一：使用 Vercel CLI
 npm i -g vercel
-
-# 2. 登录并部署
 vercel login
 vercel --prod
+
+# 方式二：网页部署
+# 1. 访问 https://vercel.com
+# 2. 导入 GitHub 仓库
+# 3. 一键部署
 ```
 
-### 2. GitHub Pages 部署
+**特性支持**：
+- ✅ Serverless Functions
+- ✅ 自动HTTPS和CDN
+- ✅ 100GB免费流量
+- ✅ Node.js + Sharp 完美支持
 
-创建 `.github/workflows/deploy.yml`:
-
-```yaml
-name: Deploy to GitHub Pages
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
-```
-
-### 3. Docker 部署
-
-创建 `Dockerfile`:
-
-```dockerfile
-FROM node:18-alpine
-
-WORKDIR /app
-
-# 安装依赖
-RUN apk add --no-cache \
-    vips-dev \
-    build-base \
-    python3 \
-    make \
-    g++
-
-COPY package*.json ./
-RUN npm ci --only=production
-
-COPY . .
-
-EXPOSE 3000
-
-CMD ["node", "server.js"]
-```
-
-构建和运行：
-
-```bash
-# 构建镜像
-docker build -t compressImg-compressor .
-
-# 运行容器
-docker run -p 3000:3000 compressImg-compressor
-```
-
-### 4. Nginx 反向代理
-
-```nginx
-server {
-    listen 80;
-    server_name your-domain.com;
-
-    location / {
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_cache_bypass $http_upgrade;
-
-        # 文件上传大小限制
-        client_max_body_size 50M;
-    }
-}
-```
+详细部署指南请查看 [DEPLOYMENT-GUIDE.md](DEPLOYMENT-GUIDE.md)
 
 ## 🛠️ API 文档
 

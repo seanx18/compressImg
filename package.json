@@ -7,7 +7,6 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "build": "mkdir -p public && cp index.html styles.css script.js public/",
-    "deploy": "gh-pages -d .",
     "install-deps": "npm install",
     "vercel-build": "mkdir -p public && cp index.html styles.css script.js public/"
   },
@@ -22,7 +21,6 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
-    "gh-pages": "^6.0.0",
     "serverless-http": "^3.2.0"
   },
   "engines": {

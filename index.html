@@ -42,81 +42,13 @@
                 </div>
               </section>
 
-              <!-- 设置区域 -->
-              <section class="settings-section">
-                <div class="settings-grid">
-                  <!-- 基础设置 -->
-                  <div class="setting-group">
-                    <h4>📏 尺寸设置</h4>
-                    <div class="setting-row">
-                      <label>
-                        宽度 (px):
-                        <input type="number" id="widthInput" placeholder="原图宽度" min="1" max="4096" />
-                      </label>
-                      <label>
-                        高度 (px):
-                        <input type="number" id="heightInput" placeholder="原图高度" min="1" max="4096" />
-                      </label>
-                    </div>
-                    <div class="setting-row">
-                      <label class="checkbox-label">
-                        <input type="checkbox" id="keepRatio" checked />
-                        <span class="checkmark"></span>
-                        保持宽高比
-                      </label>
-                    </div>
-                  </div>
-
-                  <!-- 质量设置 -->
-                  <div class="setting-group">
-                    <h4>🎯 压缩设置</h4>
-                    <div class="setting-row">
-                      <label>
-                        图片质量: <span id="qualityValue">85</span>%
-                        <input type="range" id="qualitySlider" min="10" max="100" value="85" />
-                      </label>
-                    </div>
-                    <div class="setting-row">
-                      <label>
-                        输出格式:
-                        <select id="formatSelect">
-                          <option value="webp">WebP (推荐)</option>
-                          <option value="jpg">JPEG</option>
-                          <option value="png">PNG</option>
-                          <option value="auto">自动选择</option>
-                        </select>
-                      </label>
-                    </div>
-                  </div>
-
-                  <!-- 动画设置 -->
-                  <div class="setting-group">
-                    <h4>🎬 动画设置</h4>
-                    <div class="setting-row">
-                      <label class="checkbox-label">
-                        <input type="checkbox" id="preserveAnimation" checked />
-                        <span class="checkmark"></span>
-                        保持动画效果
-                      </label>
-                    </div>
-                    <div class="setting-row">
-                      <label class="checkbox-label">
-                        <input type="checkbox" id="keepOriginalName" checked />
-                        <span class="checkmark"></span>
-                        保持原始文件名
-                      </label>
-                    </div>
-                  </div>
-
-                  <!-- 操作按钮 -->
-                  <div class="setting-group">
-                    <h4>⚡ 操作</h4>
-                    <div class="button-group">
-                      <button id="compressBtn" class="btn btn-primary" disabled>🚀 开始压缩</button>
-                      <button id="clearBtn" class="btn btn-secondary">🗑️ 清空列表</button>
-                      <button id="downloadAllBtn" class="btn btn-success" disabled>📦 下载全部</button>
-                    </div>
-                  </div>
+              <!-- 操作按钮区域 -->
+              <section class="actions-section">
+                <div class="button-group">
+                  <button id="settingsBtn" class="btn btn-secondary">⚙️ 设置</button>
+                  <button id="compressBtn" class="btn btn-primary" disabled>🚀 开始压缩</button>
+                  <button id="clearBtn" class="btn btn-secondary">🗑️ 清空列表</button>
+                  <button id="downloadAllBtn" class="btn btn-success" disabled>📦 下载全部</button>
                 </div>
               </section>
             </div>
@@ -141,35 +73,14 @@
 
               <!-- 统计区域 -->
               <section class="stats-section" id="statsSection" style="display: none">
-                <div class="stats-grid">
-                  <div class="stat-item">
-                    <div class="stat-icon">📊</div>
-                    <div class="stat-content">
-                      <div class="stat-value" id="totalCompressionRatio">0%</div>
-                      <div class="stat-label">总体压缩率</div>
-                    </div>
-                  </div>
-                  <div class="stat-item">
-                    <div class="stat-icon">💾</div>
-                    <div class="stat-content">
-                      <div class="stat-value" id="spaceSaved">0 MB</div>
-                      <div class="stat-label">节省空间</div>
-                    </div>
-                  </div>
-                  <div class="stat-item">
-                    <div class="stat-icon">⚡</div>
-                    <div class="stat-content">
-                      <div class="stat-value" id="processingTime">0s</div>
-                      <div class="stat-label">处理时间</div>
-                    </div>
-                  </div>
-                  <div class="stat-item">
-                    <div class="stat-icon">✅</div>
-                    <div class="stat-content">
-                      <div class="stat-value" id="successCount">0</div>
-                      <div class="stat-label">成功处理</div>
-                    </div>
-                  </div>
+                <div class="stats-summary">
+                  <h4>📊 压缩统计</h4>
+                  <p class="stats-text">
+                    压缩率 <span id="totalCompressionRatio">0%</span> | 
+                    节省 <span id="spaceSaved">0 MB</span> | 
+                    耗时 <span id="processingTime">0s</span> | 
+                    成功 <span id="successCount">0</span> 个文件
+                  </p>
                 </div>
               </section>
             </div>
@@ -186,6 +97,82 @@
           </p>
         </div>
       </footer>
+    </div>
+
+    <!-- 悬浮设置面板 -->
+    <div class="settings-overlay" id="settingsOverlay" style="display: none">
+      <div class="settings-panel">
+        <div class="settings-header">
+          <h3>⚙️ 压缩设置</h3>
+          <button class="close-btn" id="closeSettingsBtn">✕</button>
+        </div>
+        <div class="settings-content">
+          <div class="settings-grid">
+            <!-- 基础设置 -->
+            <div class="setting-group">
+              <h4>📏 尺寸设置</h4>
+              <div class="setting-row">
+                <label>
+                  宽度 (px):
+                  <input type="number" id="widthInput" placeholder="原图宽度" min="1" max="4096" />
+                </label>
+                <label>
+                  高度 (px):
+                  <input type="number" id="heightInput" placeholder="原图高度" min="1" max="4096" />
+                </label>
+              </div>
+              <div class="setting-row">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="keepRatio" checked />
+                  <span class="checkmark"></span>
+                  保持宽高比
+                </label>
+              </div>
+            </div>
+
+            <!-- 质量设置 -->
+            <div class="setting-group">
+              <h4>🎯 压缩设置</h4>
+              <div class="setting-row">
+                <label>
+                  图片质量: <span id="qualityValue">85</span>%
+                  <input type="range" id="qualitySlider" min="10" max="100" value="85" />
+                </label>
+              </div>
+              <div class="setting-row">
+                <label>
+                  输出格式:
+                  <select id="formatSelect">
+                    <option value="webp">WebP (推荐)</option>
+                    <option value="jpg">JPEG</option>
+                    <option value="png">PNG</option>
+                    <option value="auto">自动选择</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <!-- 动画设置 -->
+            <div class="setting-group">
+              <h4>🎬 动画设置</h4>
+              <div class="setting-row">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="preserveAnimation" checked />
+                  <span class="checkmark"></span>
+                  保持动画效果
+                </label>
+              </div>
+              <div class="setting-row">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="keepOriginalName" checked />
+                  <span class="checkmark"></span>
+                  保持原始文件名
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 加载提示 -->
