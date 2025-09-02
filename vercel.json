@@ -1,24 +1,22 @@
 {
   "version": 2,
-  "name": "compressImg",
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
+  "functions": {
+    "server.js": {
+      "runtime": "nodejs18.x"
     }
-  ],
+  },
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/server.js"
+    { 
+      "src": "/api/(.*)", 
+      "dest": "/server.js" 
     },
-    {
-      "src": "/",
-      "dest": "/index.html"
+    { 
+      "src": "/", 
+      "dest": "/index.html" 
     },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+    { 
+      "src": "/(.*)", 
+      "dest": "/index.html" 
     }
   ]
 }
