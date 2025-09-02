@@ -94,6 +94,36 @@ body {
   min-height: calc(100vh - 200px);
 }
 
+/* 主工作区域 - 左右分栏布局 */
+.main-workspace {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.left-panel {
+  flex: 1;
+  min-width: 0; /* 防止内容溢出 */
+}
+
+.right-panel {
+  flex: 0 0 400px; /* 固定宽度 400px */
+  min-height: 600px;
+}
+
+/* 响应式调整 */
+@media (max-width: 1024px) {
+  .main-workspace {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .right-panel {
+    flex: 1;
+    min-height: auto;
+  }
+}
+
 /* 通用部分样式 */
 section {
   background: var(--surface-color);
@@ -372,6 +402,21 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .files-list {
   min-height: 200px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* 右侧面板中的文件列表样式优化 */
+.right-panel .files-section {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.right-panel .files-list {
+  flex: 1;
+  min-height: 300px;
+  max-height: none;
 }
 
 .empty-state {
